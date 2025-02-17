@@ -1,0 +1,12 @@
+.username {
+  font-weight: bold;
+  background: linear-gradient(
+    120deg,
+    var(--color-orange-500) 0%,
+    var(--color-neutral-0) 100%
+  );
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text; /* Para navegadores WebKit (Chrome, Safari) */
+  -webkit-text-fill-color: transparent; /* Asegura compatibilidad */
+}
