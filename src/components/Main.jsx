@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Congrats from "./Congrats";
 export default function Main() {
   const [ready, setReady] = useState(false);
+  const [upload, setUload] = useState(true);
+  const [form, setForm] = useState(undefined);
+  const [image, setImage] = useState(null); // Almacena la URL de la imagen
+  const inputRef = useRef(null); // Referencia al input para borrar la imagen
   const {
     register,
     handleSubmit,
@@ -13,23 +17,39 @@ export default function Main() {
       fullname: "",
       email: "",
       username: "",
-      file: undefined,
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    setReady(true);
+    setForm({ ...data, avatar: image,ticketNumber:'01609'})
+  };
 
-  console.log(watch("example"));
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]; // Obtiene el primer archivo
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImage(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("Por favor, selecciona una imagen.");
+      event.target.value = "";
+    }
+  };
+
+  const handleClearImage = (e) => {
+    e.preventDefault();
+    setImage(null);
+    inputRef.current.value = ""; // Limpia el input
+  };
+
   return (
     <main class='max-w-4xl mx-auto px-4 md:px-8 lg:px-0 text-neutral-0 text-center'>
       {ready ? (
         <Congrats
-          data={{
-            fullname: "Jonatan Kristof",
-            email: "Jonatankristof@email.com",
-            username: "Jonatankristof0101",
-            ticketNumber: "01609",
-          }}
+          data={form}
         />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -45,21 +65,45 @@ export default function Main() {
               <p>Upload Avatar</p>
               <label
                 htmlFor='file'
-                className='w-full h-28 bg-neutral-900 rounded-md border-2 border-neutral-300 border-dotted'
+                className='w-full h-28 bg-neutral-900 rounded-md border-2 border-neutral-300 border-dotted relative'
               >
                 <input
                   type='file'
                   id='file'
-                  placeholder=' '
-                  {...register("file", {
-                    required: "Debes seleccionar un archivo",
-                    validate: (file) => {
-                      const isValidSize = file[0]?.size < 5_000;
-                      return isValidSize || "El archivo es demasiado grande";
-                    },
-                  })}
                   className='hidden'
+                  onChange={handleFileChange}
+                  ref={inputRef}
                 />
+                {image ? (
+                  <div className='absolute flex flex-col justify-center gap-2 items-center w-full h-full'>
+                    <div>
+                      <img alt='' src={image} className='rounded-md size-12' />
+                    </div>
+                    <div className='flex gap-3 text-xs'>
+                      <button
+                        onClick={handleClearImage}
+                        className='bg-neutral-700 py-1 px-2 rounded-md'
+                      >
+                        Remove Image
+                      </button>
+                      <button
+                        onClick={() => inputRef.current.click()}
+                        className='bg-neutral-700 py-1 px-2 rounded-md'
+                      >
+                        Change Image
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className='absolute flex flex-col justify-center gap-2 items-center w-full h-full'>
+                    <div className='bg-neutral-700 rounded-md size-10 flex justify-center items-center'>
+                      <img src='/assets/images/icon-upload.svg' alt='' />
+                    </div>
+                    <p className='text-neutral-700 text-xs'>
+                      Drag and drop or click to upload
+                    </p>
+                  </div>
+                )}
               </label>
               <p className='text-xs  text-neutral-500 flex gap-1.5 '>
                 <img src='/assets/images/icon-info.svg' alt='' />
@@ -71,6 +115,7 @@ export default function Main() {
               <input
                 type='text'
                 id='fullname'
+                {...register("fullname")}
                 className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
               />
             </div>
@@ -80,6 +125,7 @@ export default function Main() {
               <input
                 type='email'
                 id='email'
+                {...register("email")}
                 className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
                 placeholder='example@email.com'
               />
@@ -90,6 +136,7 @@ export default function Main() {
               <input
                 type='email'
                 id='username'
+                {...register("username")}
                 className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
                 placeholder='@yourusername'
               />

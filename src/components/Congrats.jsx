@@ -28,7 +28,7 @@ export default function Congrats({ data }) {
         </div>
         <div className='absolute bottom-3 left-4 flex justify-center items-center gap-4 md:bottom-8 md:left-8 md:gap-6'>
           <img
-            src='/assets/images/image-avatar.jpg'
+            src={data.avatar}
             className='size-10 rounded-md md:size-24'
             alt=''
           />
