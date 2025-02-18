@@ -8,10 +8,10 @@ export default function Main() {
   const [image, setImage] = useState(null); // Almacena la URL de la imagen
   const inputRef = useRef(null); // Referencia al input para borrar la imagen
   const fileInfo = useRef(null);
+  const [msgError, setMsgError] = useState(undefined);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -28,16 +28,26 @@ export default function Main() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0]; // Obtiene el primer archivo
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setImage(event.target.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      alert("Por favor, selecciona una imagen.");
-      event.target.value = "";
+    if (
+      !file.type.startsWith("image/") &&
+      file.type !== "image/jpeg" &&
+      file.type !== "image/png"
+    ) {
+      setMsgError("Only (JPG or PNG) files are allowed.");
+      return;
     }
+    if (file.size > 500 * 1024) {
+      setMsgError("File too large. Please upload a photo under 500KB.");
+      event.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setImage(event.target.result);
+    };
+    reader.readAsDataURL(file);
+    setMsgError(undefined);
   };
 
   const handleClearImage = (e) => {
@@ -47,7 +57,7 @@ export default function Main() {
   };
 
   return (
-    <main class='max-w-4xl mx-auto px-4 md:px-8 lg:px-0 text-neutral-0 text-center'>
+    <main className='max-w-4xl mx-auto px-4 md:px-8 lg:px-0 text-neutral-0 text-center'>
       {ready ? (
         <Congrats data={form} />
       ) : (
@@ -109,7 +119,11 @@ export default function Main() {
                 className='text-xs  text-neutral-500 flex gap-1.5 '
               >
                 <img src='/assets/images/icon-info.svg' alt='' />
-                <span>Upload your photo (JPG or PNG, max size: 500KB).</span>
+                {!msgError ? (
+                  <span>Upload your photo (JPG or PNG, max size: 500KB).</span>
+                ) : (
+                  <span className='text-orange-700'>{msgError}</span>
+                )}
               </p>
             </div>
             <div className='flex flex-col gap-2 relative'>
