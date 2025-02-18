@@ -1,12 +1,13 @@
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Congrats from "./Congrats";
+import "./Main.css";
 export default function Main() {
   const [ready, setReady] = useState(false);
-  const [upload, setUload] = useState(true);
   const [form, setForm] = useState(undefined);
   const [image, setImage] = useState(null); // Almacena la URL de la imagen
   const inputRef = useRef(null); // Referencia al input para borrar la imagen
+  const fileInfo = useRef(null);
   const {
     register,
     handleSubmit,
@@ -22,7 +23,7 @@ export default function Main() {
 
   const onSubmit = (data) => {
     setReady(true);
-    setForm({ ...data, avatar: image,ticketNumber:'01609'})
+    setForm({ ...data, avatar: image, ticketNumber: "01609" });
   };
 
   const handleFileChange = (event) => {
@@ -48,9 +49,7 @@ export default function Main() {
   return (
     <main class='max-w-4xl mx-auto px-4 md:px-8 lg:px-0 text-neutral-0 text-center'>
       {ready ? (
-        <Congrats
-          data={form}
-        />
+        <Congrats data={form} />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <h1 className='text-3xl  pb-4 font-semibold md:text-6xl md:pb-8 '>
@@ -60,7 +59,7 @@ export default function Main() {
             Secure your spot at next year's biggest coding conference.
           </p>
 
-          <section className='max-w-[400px] mx-auto flex flex-col gap-4 text-left'>
+          <section className='max-w-[400px] mx-auto flex flex-col gap-6 text-left'>
             <div className=' flex flex-col gap-2'>
               <p>Upload Avatar</p>
               <label
@@ -105,41 +104,65 @@ export default function Main() {
                   </div>
                 )}
               </label>
-              <p className='text-xs  text-neutral-500 flex gap-1.5 '>
+              <p
+                ref={fileInfo}
+                className='text-xs  text-neutral-500 flex gap-1.5 '
+              >
                 <img src='/assets/images/icon-info.svg' alt='' />
-                Upload your photo (JPG or PNG, max size: 500KB).
+                <span>Upload your photo (JPG or PNG, max size: 500KB).</span>
               </p>
             </div>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2 relative'>
               <label htmlFor='fullname'>Full Name</label>
               <input
                 type='text'
                 id='fullname'
-                {...register("fullname")}
+                {...register("fullname", { required: true })}
                 className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
               />
+              {errors.fullname && (
+                <span className='text-xs absolute -bottom-5 text-orange-700 flex justify-center items-center gap-2'>
+                  {" "}
+                  <img className='size-3' src='/assets/images/icon-info.svg' />
+                  This field is required
+                </span>
+              )}
             </div>
 
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2 relative'>
               <label htmlFor='email'>Email Address</label>
               <input
                 type='email'
                 id='email'
-                {...register("email")}
+                {...register("email", { required: true })}
                 className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
                 placeholder='example@email.com'
               />
+              {errors.email && (
+                <span className='text-xs absolute -bottom-5 text-orange-700 flex justify-center items-center gap-2'>
+                  {" "}
+                  <img className='size-3' src='/assets/images/icon-info.svg' />
+                  This field is required
+                </span>
+              )}
             </div>
 
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2 relative'>
               <label htmlFor='username'>GitHub Username</label>
               <input
-                type='email'
+                type='text'
                 id='username'
-                {...register("username")}
+                {...register("username", { required: true })}
                 className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
                 placeholder='@yourusername'
               />
+              {errors.username && (
+                <span className='text-xs absolute -bottom-5 text-orange-700 flex justify-center items-center gap-2'>
+                  {" "}
+                  <img className='size-3' src='/assets/images/icon-info.svg' />
+                  This field is required
+                </span>
+              )}
             </div>
 
             <button
