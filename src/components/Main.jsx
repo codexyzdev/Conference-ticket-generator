@@ -67,11 +67,10 @@ export default function Main() {
     inputRef.current.value = ""; // Limpia el input
   };
 
-  const handleChangeImage = (e) => {  
-
+  const handleChangeImage = (e) => {
     e.preventDefault();
     inputRef.current.click();
-  }
+  };
 
   return (
     <main className='max-w-4xl mx-auto px-4 md:px-8 lg:px-0 text-neutral-0 text-center'>
@@ -91,7 +90,7 @@ export default function Main() {
               <p>Upload Avatar</p>
               <label
                 htmlFor='file'
-                className='w-full h-28 bg-neutral-900 rounded-md border-2 border-neutral-300 border-dotted relative'
+                className='w-full h-28 bg-transparent backdrop-blur-xs rounded-md border-2 border-neutral-300 border-dotted relative'
               >
                 <input
                   type='file'
@@ -103,7 +102,11 @@ export default function Main() {
                 {image ? (
                   <div className='absolute flex flex-col justify-center gap-2 items-center w-full h-full'>
                     <div>
-                      <img alt='avatar' src={image} className='rounded-md size-12' />
+                      <img
+                        alt='avatar'
+                        src={image}
+                        className='rounded-md size-12'
+                      />
                     </div>
                     <div className='flex gap-3 text-xs'>
                       <button
@@ -149,7 +152,7 @@ export default function Main() {
                 type='text'
                 id='fullname'
                 {...register("fullname", { required: true })}
-                className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
+                className='p-2 bg-transparent backdrop-blur-xs w-full border border-neutral-500 rounded-md'
               />
               {errors.fullname && (
                 <span className='text-xs absolute -bottom-5 text-orange-700 flex justify-center items-center gap-2'>
@@ -166,7 +169,7 @@ export default function Main() {
                 type='email'
                 id='email'
                 {...register("email", { required: true })}
-                className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
+                className='p-2 bg-transparent backdrop-blur-xs w-full border border-neutral-500 rounded-md'
                 placeholder='example@email.com'
               />
               {errors.email && (
@@ -184,7 +187,7 @@ export default function Main() {
                 type='text'
                 id='username'
                 {...register("username", { required: true })}
-                className='p-2 bg-neutral-900 w-full border border-neutral-500 rounded-md'
+                className='p-2 bg-transparent backdrop-blur-xs w-full border border-neutral-500 rounded-md'
                 placeholder='@yourusername'
               />
               {errors.username && (
