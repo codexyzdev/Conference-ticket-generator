@@ -10,3 +10,8 @@
   -webkit-background-clip: text; /* Para navegadores WebKit (Chrome, Safari) */
   -webkit-text-fill-color: transparent; /* Asegura compatibilidad */
 }
+
+h1{
+  font-size: clamp(1.875rem, 5vw, 3.75rem);
+  line-height: 1.2;
+}

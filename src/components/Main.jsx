@@ -62,7 +62,7 @@ export default function Main() {
         <Congrats data={form} />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h1 className='text-3xl  pb-4 font-semibold md:text-6xl md:pb-8 '>
+          <h1 className=' pb-4 font-semibold  md:pb-8 '>
             Your Journey to Coding Conf 2025 Starts Here!
           </h1>
           <p className='pb-4 md:pb-8 text-neutral-500 text-xl  mx-auto md:text-2xl font-semibold'>

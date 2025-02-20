@@ -2,7 +2,7 @@ import "./congrats.css";
 export default function Congrats({ data }) {
   return (
     <section>
-      <h1 className='text-3xl  pb-4 font-semibold md:text-6xl md:pb-8'>
+      <h1 className='pb-4 font-semibold md:pb-8'>
         Congrats, <span className='username'>{data.fullname}</span> Your ticket
         is ready
       </h1>
