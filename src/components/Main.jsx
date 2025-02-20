@@ -82,6 +82,7 @@ export default function Main() {
                   className='hidden'
                   onChange={handleFileChange}
                   ref={inputRef}
+                  required
                 />
                 {image ? (
                   <div className='absolute flex flex-col justify-center gap-2 items-center w-full h-full'>
@@ -120,7 +121,9 @@ export default function Main() {
               >
                 <img src='/assets/images/icon-info.svg' alt='' />
                 {!msgError ? (
-                  <span>Upload your photo (JPG or PNG, max size: 500KB).</span>
+                  <span style={{ color: image ? "" : "hsl(7, 71%, 60%)" }}>
+                    Upload your photo (JPG or PNG, max size: 500KB).
+                  </span>
                 ) : (
                   <span className='text-orange-700'>{msgError}</span>
                 )}
