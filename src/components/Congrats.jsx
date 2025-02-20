@@ -13,7 +13,7 @@ export default function Congrats({ data }) {
       </p>
       <div className='max-w-[320px] md:max-w-[600px] relative mx-auto'>
         <img src='/assets/images/pattern-ticket.svg' alt='' />
-        <div className='absolute top-2 left-4 flex justify-center items-center gap-4 md:top-8 md:left-8 md:gap-6'>
+        <div className='absolute top-4 left-4 flex justify-center items-center gap-4 md:top-8 md:left-8 md:gap-6'>
           <img
             src='/assets/images/logo-mark.svg'
             className='size-8 md:size-10 md:self-start'
@@ -26,7 +26,7 @@ export default function Congrats({ data }) {
             </p>
           </div>
         </div>
-        <div className='absolute bottom-3 left-4 flex justify-center items-center gap-4 md:bottom-8 md:left-8 md:gap-6'>
+        <div className='absolute bottom-5 left-4 flex justify-center items-center gap-4 md:bottom-8 md:left-8 md:gap-6'>
           <img
             src={data.avatar}
             className='size-10 rounded-md md:size-24'
