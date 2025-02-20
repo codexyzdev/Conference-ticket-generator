@@ -67,6 +67,12 @@ export default function Main() {
     inputRef.current.value = ""; // Limpia el input
   };
 
+  const handleChangeImage = (e) => {  
+
+    e.preventDefault();
+    inputRef.current.click();
+  }
+
   return (
     <main className='max-w-4xl mx-auto px-4 md:px-8 lg:px-0 text-neutral-0 text-center'>
       {ready ? (
@@ -97,7 +103,7 @@ export default function Main() {
                 {image ? (
                   <div className='absolute flex flex-col justify-center gap-2 items-center w-full h-full'>
                     <div>
-                      <img alt='' src={image} className='rounded-md size-12' />
+                      <img alt='avatar' src={image} className='rounded-md size-12' />
                     </div>
                     <div className='flex gap-3 text-xs'>
                       <button
@@ -107,7 +113,7 @@ export default function Main() {
                         Remove Image
                       </button>
                       <button
-                        onClick={() => inputRef.current.click()}
+                        onClick={handleChangeImage}
                         className='bg-neutral-700 py-1 px-2 rounded-md'
                       >
                         Change Image
