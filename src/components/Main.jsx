@@ -5,8 +5,8 @@ import "./Main.css";
 export default function Main() {
   const [ready, setReady] = useState(false);
   const [form, setForm] = useState(undefined);
-  const [image, setImage] = useState(null); // Almacena la URL de la imagen
-  const inputRef = useRef(null); // Referencia al input para borrar la imagen
+  const [image, setImage] = useState(null);
+  const inputRef = useRef(null);
   const fileInfo = useRef(null);
   const [msgError, setMsgError] = useState(undefined);
   const {
@@ -21,9 +21,20 @@ export default function Main() {
     },
   });
 
+  const generateTicketNumber = () => {
+    const number = Math.floor(Math.random() * 100000); // Número entre 0 y 99999
+    return number.toString().padStart(5, "0");
+  };
+
   const onSubmit = (data) => {
-    setReady(true);
-    setForm({ ...data, avatar: image, ticketNumber: "01609" });
+    if (!image) {
+      setMsgError("Upload your photo (JPG or PNG, max size: 500KB).");
+    } else {
+      setMsgError(undefined);
+      setReady(true);
+    }
+
+    setForm({ ...data, avatar: image, ticketNumber: generateTicketNumber() });
   };
 
   const handleFileChange = (event) => {
@@ -82,7 +93,6 @@ export default function Main() {
                   className='hidden'
                   onChange={handleFileChange}
                   ref={inputRef}
-                  required
                 />
                 {image ? (
                   <div className='absolute flex flex-col justify-center gap-2 items-center w-full h-full'>
@@ -121,9 +131,7 @@ export default function Main() {
               >
                 <img src='/assets/images/icon-info.svg' alt='' />
                 {!msgError ? (
-                  <span style={{ color: image ? "" : "hsl(7, 71%, 60%)" }}>
-                    Upload your photo (JPG or PNG, max size: 500KB).
-                  </span>
+                  <span>Upload your photo (JPG or PNG, max size: 500KB).</span>
                 ) : (
                   <span className='text-orange-700'>{msgError}</span>
                 )}
