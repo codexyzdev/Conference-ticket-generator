@@ -1,13 +1,18 @@
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Congrats from "./Congrats";
+import {
+  generateTicketNumber,
+  isValidEmail,
+  isValidGitHubUsername,
+} from "../util/funtions";
 import "./Main.css";
+
 export default function Main() {
   const [ready, setReady] = useState(false);
   const [form, setForm] = useState(undefined);
   const [image, setImage] = useState(null);
   const inputRef = useRef(null);
-  const fileInfo = useRef(null);
   const [msgError, setMsgError] = useState(undefined);
   const {
     register,
@@ -21,24 +26,8 @@ export default function Main() {
     },
   });
 
-  const generateTicketNumber = () => {
-    const number = Math.floor(Math.random() * 100000); // Número entre 0 y 99999
-    return number.toString().padStart(5, "0");
-  };
-
-  const onSubmit = (data) => {
-    if (!image) {
-      setMsgError("Upload your photo (JPG or PNG, max size: 500KB).");
-    } else {
-      setMsgError(undefined);
-      setReady(true);
-    }
-
-    setForm({ ...data, avatar: image, ticketNumber: generateTicketNumber() });
-  };
-
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Obtiene el primer archivo
+    const file = event.target.files[0];
     if (
       !file.type.startsWith("image/") &&
       file.type !== "image/jpeg" &&
@@ -64,12 +53,22 @@ export default function Main() {
   const handleClearImage = (e) => {
     e.preventDefault();
     setImage(null);
-    inputRef.current.value = ""; // Limpia el input
+    inputRef.current.value = "";
   };
 
   const handleChangeImage = (e) => {
     e.preventDefault();
     inputRef.current.click();
+  };
+
+  const onSubmit = (data) => {
+    if (!image) {
+      setMsgError("Upload your photo (JPG or PNG, max size: 500KB).");
+    } else {
+      setMsgError(undefined);
+      setReady(true);
+    }
+    setForm({ ...data, avatar: image, ticketNumber: generateTicketNumber() });
   };
 
   return (
@@ -134,10 +133,7 @@ export default function Main() {
                   </div>
                 )}
               </label>
-              <p
-                ref={fileInfo}
-                className='text-xs  text-neutral-500 flex gap-1.5 '
-              >
+              <p className='text-xs  text-neutral-500 flex gap-1.5 '>
                 <img src='/assets/images/icon-info.svg' alt='' />
                 {!msgError ? (
                   <span>Upload your photo (JPG or PNG, max size: 500KB).</span>
@@ -166,9 +162,13 @@ export default function Main() {
             <div className='flex flex-col gap-2 relative'>
               <label htmlFor='email'>Email Address</label>
               <input
-                type='email'
+                type='text'
                 id='email'
-                {...register("email", { required: true })}
+                {...register("email", {
+                  required: true,
+                  validate: (value) =>
+                    isValidEmail(value) ? undefined : "Invalid email address",
+                })}
                 className='p-2 bg-transparent backdrop-blur-xs w-full border border-neutral-500 rounded-md'
                 placeholder='example@email.com'
               />
@@ -176,7 +176,9 @@ export default function Main() {
                 <span className='text-xs absolute -bottom-5 text-orange-700 flex justify-center items-center gap-2'>
                   {" "}
                   <img className='size-3' src='/assets/images/icon-info.svg' />
-                  This field is required
+                  {errors.email.message
+                    ? errors.email.message
+                    : "This field is required"}
                 </span>
               )}
             </div>
@@ -186,7 +188,13 @@ export default function Main() {
               <input
                 type='text'
                 id='username'
-                {...register("username", { required: true })}
+                {...register("username", {
+                  required: true,
+                  validate: (value) =>
+                    isValidGitHubUsername(value)
+                      ? undefined
+                      : "Invalid GitHub username",
+                })}
                 className='p-2 bg-transparent backdrop-blur-xs w-full border border-neutral-500 rounded-md'
                 placeholder='@yourusername'
               />
@@ -194,7 +202,9 @@ export default function Main() {
                 <span className='text-xs absolute -bottom-5 text-orange-700 flex justify-center items-center gap-2'>
                   {" "}
                   <img className='size-3' src='/assets/images/icon-info.svg' />
-                  This field is required
+                  {errors.username.message
+                    ? errors.username.message
+                    : "This field is required"}
                 </span>
               )}
             </div>
