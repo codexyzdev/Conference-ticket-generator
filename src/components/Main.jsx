@@ -14,6 +14,7 @@ export default function Main() {
   const [image, setImage] = useState(null);
   const inputRef = useRef(null);
   const [msgError, setMsgError] = useState(undefined);
+  const [dragActive, setDragActive] = useState(false);
   const {
     register,
     handleSubmit,
@@ -61,6 +62,22 @@ export default function Main() {
     inputRef.current.click();
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Asignamos el primer archivo de los arrastrados
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      // Simulamos un evento para reutilizar handleFileChange
+      handleFileChange({ target: { files: [file], value: "" } });
+    }
+  };
+
   const onSubmit = (data) => {
     if (!image) {
       setMsgError("Upload your photo (JPG or PNG, max size: 500KB).");
@@ -89,6 +106,8 @@ export default function Main() {
               <p>Upload Avatar</p>
               <label
                 htmlFor='file'
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
                 className='w-full h-28 bg-transparent backdrop-blur-xs rounded-md border-2 border-neutral-300 border-dotted relative '
               >
                 <input
