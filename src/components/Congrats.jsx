@@ -40,7 +40,7 @@ export default function Congrats({ data }) {
                 className='size-4 md:size-8'
                 alt=''
               />
-              @{data.username}
+              {data.username}
             </p>
           </div>
         </div>

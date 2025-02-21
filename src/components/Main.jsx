@@ -89,7 +89,7 @@ export default function Main() {
               <p>Upload Avatar</p>
               <label
                 htmlFor='file'
-                className='w-full h-28 bg-transparent backdrop-blur-xs rounded-md border-2 border-neutral-300 border-dotted relative'
+                className='w-full h-28 bg-transparent backdrop-blur-xs rounded-md border-2 border-neutral-300 border-dotted relative '
               >
                 <input
                   type='file'
@@ -110,13 +110,13 @@ export default function Main() {
                     <div className='flex gap-3 text-xs'>
                       <button
                         onClick={handleClearImage}
-                        className='bg-neutral-700 py-1 px-2 rounded-md'
+                        className='bg-neutral-700 py-1 px-2 rounded-md hover:underline'
                       >
                         Remove Image
                       </button>
                       <button
                         onClick={handleChangeImage}
-                        className='bg-neutral-700 py-1 px-2 rounded-md'
+                        className='bg-neutral-700 py-1 px-2 rounded-md hover:underline'
                       >
                         Change Image
                       </button>
@@ -127,7 +127,7 @@ export default function Main() {
                     <div className='bg-neutral-700 rounded-md size-10 flex justify-center items-center'>
                       <img src='/assets/images/icon-upload.svg' alt='' />
                     </div>
-                    <p className='text-neutral-700 text-xs'>
+                    <p className='text-neutral-700  text-xs'>
                       Drag and drop or click to upload
                     </p>
                   </div>
